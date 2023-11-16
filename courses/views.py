@@ -21,8 +21,12 @@ class ManageCourseListView(ListView):
     
     def get_queryset(self):
         qs = super().get_queryset()
+        #if self.request.user.is_authenticated:
         return qs.filter(owner=self.request.user)
-
+        # else:
+        #     return redirect('login')
+            
+        
 
 class OwnerMixin:
     def get_queryset(self):
