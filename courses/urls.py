@@ -1,40 +1,21 @@
-from django.db import models
-from django.contrib.auth.models import User
+from django.urls import path
+from . import views
 
 
-class Subject(models.Model):
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True)
-    class Meta:
-        ordering = ['title']
+urlpatterns = [
+    path('mine/',views.ManageCourseListView.as_view(),
+        name='manage_course_list'),
 
-    def __str__(self):
-        return self.title
-    
-class Course(models.Model):
-    owner = models.ForeignKey(User, related_name='courses_created', 
-                              on_delete=models.CASCADE)
-    subject = models.ForeignKey(Subject, related_name='courses',
-                                on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True)
-    overview = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
+    path('create/',views.CourseCreateView.as_view(),
+        name='course_create'),
 
-    class Meta:
-        ordering = ['-created']
+    path('<pk>/edit/', views.CourseUpdateView.as_view(),
+        name='course_edit'),
 
-    def __str__(self):
-        return self.title
-    
+    path('<pk>/delete/', views.CourseDeleteView.as_view(),
+        name='course_delete'),
+        
+    path('<pk>/module/', views.CourseModuleUpdateView.as_view(),
+        name='course_module_update'),
+]
 
-class Module(models.Model):
-    course = models.ForeignKey(Course, related_name='modules', 
-                               on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-
-    def __str__(self):
-        return self.title
-    
-    
