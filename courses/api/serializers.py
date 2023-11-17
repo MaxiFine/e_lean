@@ -10,6 +10,13 @@ class SubjectSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'slug']
 
 
+# serializing the module model
+class ModuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Module
+        fields = ['owner', 'title', 'description']
+
+
 # Creating a nested serializer
 class CourseSerializer(serializers.ModelSerializer):
     modules = ModuleSerializer(many=True, read_only=True)
@@ -22,8 +29,3 @@ class CourseSerializer(serializers.ModelSerializer):
         ]
 
 
-# serializing the module model
-class ModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Module
-        fields = ['owner', 'title', 'description']
