@@ -19,6 +19,9 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from courses.views import CourseListView
+
+
 
 urlpatterns = [
    
@@ -27,6 +30,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('courses/', include('courses.urls')),
     path('api/', include("courses.api.urls", namespace='api')),
+    path('', CourseListView.as_view(), name='course_list'),
 ]
 
 if settings.DEBUG:
