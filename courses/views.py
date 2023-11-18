@@ -12,9 +12,10 @@ from django.forms.models import modelform_factory
 from django.apps import apps
 from django.db.models import Count
 
-from .models import Module, Content
+from .models import Module, Content, Course, Subject
 
-from .models import Course, Subject
+# adding enrolment button
+from students.forms import CourseEnrollForm
 
 
 class ManageCourseListView(ListView):
@@ -190,3 +191,13 @@ class CourseDetailView(DetailView):
     template_name = 'courses/course/detail.html'
 
 
+# adding enrolment form to the course
+class CourseDetailView(DetailView):
+    model = Course
+    template_name = 'courses/course/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['enroll_form'] = CourseEnrollForm(
+            initial={'course':self.object})
+        return context
